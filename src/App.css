@@ -1,0 +1,146 @@
+/* Common */
+#header .logo {
+  width: 30%;
+  margin-top: -75px;
+}
+
+/* Payroll page */
+
+.payroll {
+  text-align: center;
+  margin-top: 80px;
+}
+
+.payroll-footer {
+  font-weight: 700;
+  margin-top: 17px;
+  text-align: right;
+}
+@media (min-width: 768px) {
+  .payroll-footer {
+    margin-top: 24px;
+  }
+}
+.payroll-footer .button {
+  margin-top: 30px;
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .payroll-footer .button {
+    margin-top: 0;
+    width: 288px;
+  }
+}
+
+.payroll .heading {
+  margin-top: 30px;
+  height: 25px;
+  text-align: left;
+}
+
+.payment-form-field {
+  border-bottom: 0 solid #e6e9eb;
+  display: flex;
+  height: 90px;
+}
+
+.payment-form-field-phone {
+  width: 20px;
+}
+
+.payment-info-item {
+  border-bottom: 1px solid #e6e9eb;
+  display: flex;
+  height: 90px;
+}
+
+.payment-info-item-left {
+  margin: auto auto auto 0;
+}
+
+.payment-info-item-right {
+  margin-left: 24px;
+  margin-bottom: auto;
+  margin-right: 24px;
+  margin-top: auto;
+}
+
+.payment-form-field-input {
+  margin-left: 24px;
+  margin-bottom: auto;
+  margin-top: auto;
+  width: 27%;
+  padding-right: 20px;
+
+  width: 50%;
+  height: 40%;
+  padding:10px;
+  text-align: right;
+  border:0;
+  border-bottom: 1px solid #e6e9eb;
+  border-radius:10px;
+  /* box-shadow:0 0 15px 4px rgba(0,0,0,0.06); */
+}
+
+.payment-form-field .phone {
+  width: 100%;
+  margin-top: auto;
+  margin-bottom: auto;
+  
+}
+
+.payment-form-field .amount {
+  width: 75%;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+/* end Payroll page */
+
+
+/* Status page */
+
+.status-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status {
+  margin: 100px 0 126px;
+  text-align: center;
+}
+
+.status .status-image {
+  display: block;
+  height: 100px;
+  margin: 16px auto 0;
+}
+
+.status .status-image-thank-you {
+  height: 66px;
+}
+
+.status .status-message {
+  margin: 20px 0 24px;
+}
+
+.status .button {
+  max-width: 236px;
+}
+
+@media (min-width: 768px) {
+  .status .button {
+    max-width: 200px;
+  }
+}
+
+/* end Status page */

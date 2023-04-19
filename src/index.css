@@ -1,0 +1,92 @@
+/* General page body */
+
+html,
+body {
+  width: 100%;
+  margin: 0;
+  font-family: "Fakt", sans-serif, Helvetica, Arial;
+}
+
+*,
+:after,
+:before {
+  box-sizing: border-box;
+}
+
+a,
+u {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.hidden {
+  display: none;
+}
+
+#header {
+  background: #fff;
+  border-bottom: 1px solid #e6e9eb;
+  height: 44px;
+  left: 0;
+  margin-bottom: 24px;
+  padding: 14px 26px;
+  position: fixed;
+  text-align: center;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+/* Buttons */
+
+.button {
+  background: #00112c;
+  border: 0;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1em;
+  font-weight: 500;
+  margin: 0;
+  padding: 15px;
+  text-align: center;
+  transition: background 0.3s ease-out, box-shadow 0.3s ease-out;
+  width: 100%;
+}
+
+.button:hover {
+  background: #1c3045;
+  box-shadow: 0 3px 4px rgba(0, 15, 45, 0.2);
+}
+
+.button:active {
+  background: #3a4a5c;
+}
+
+.button:disabled {
+  background: #e6e9eb;
+  box-shadow: none;
+  cursor: not-allowed;
+  -webkit-user-select: all;
+  -moz-user-select: all;
+  -ms-user-select: all;
+  user-select: all;
+}
+
+/* Input */
+input[type=tel], input[type=text] {
+  width: 50%;
+  height: 40px;
+  padding:24px;
+  text-align: right;
+  border:0;
+  border-bottom: 1px solid #e6e9eb;
+  border-radius:10px;
+}
+
+/* end General page body */
