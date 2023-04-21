@@ -1,15 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+const API_BASE_PATH = process.env.REACT_APP_API_BASE_PATH;
 
 export const retrieveBalance = createAsyncThunk(
   "disbursement/balance",
-  async (data) => {
-    const response = await fetch(`/v2/disbursement/balance`, {
+  async () => {
+    const response = await fetch(`${API_BASE_PATH}/api/v2/disbursement/balance`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data)
-    });
+    })
     return await response.json();
   }
 );
@@ -17,7 +17,7 @@ export const retrieveBalance = createAsyncThunk(
 export const retrieveReceivingAccount = createAsyncThunk(
   "disbursement/user",
   async (data) => {
-    const response = await fetch(`/v2/disbursement/user`, {
+    const response = await fetch(`${API_BASE_PATH}/api/v2/disbursement/user`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -31,7 +31,7 @@ export const retrieveReceivingAccount = createAsyncThunk(
 export const topup = createAsyncThunk(
   "disbursement/topup",
   async (data) => {
-    const response = await fetch(`/v2/disbursement/topup`, {
+    const response = await fetch(`${API_BASE_PATH}/api/v2/disbursement/topup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -45,7 +45,7 @@ export const topup = createAsyncThunk(
 export const queryPaymentStatus = createAsyncThunk(
   "disbursement/txn",
   async (data) => {
-    const response = await fetch(`/v2/disbursement/txn`, {
+    const response = await fetch(`${API_BASE_PATH}/api/v2/disbursement/txn`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

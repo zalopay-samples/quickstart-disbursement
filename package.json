@@ -5,6 +5,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",
     "buffer": "^6.0.3",
+    "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
     "dotenv": "^16.0.3",
     "dotenv-cli": "^7.1.0",
@@ -41,7 +42,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8080",
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

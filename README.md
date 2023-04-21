@@ -19,7 +19,9 @@ Disbursement refers to the act of paying out money, typically from a fund or acc
 
 This repository includes examples of integrations for online payments with ZaloPay [Disbursement APIs](https://docs.zalopay.vn/en/v2/payments/disbursement/overview.html). Within this Disbursify demo app, you'll find a simplified version of payroll application, complete with commented code to highlight key features and concepts of Disbursement's APIs.
 
-![Disbursify demo](public/images/payroll-via-zalopay.gif)
+<p align="center">
+  <img src="public/images/payroll-via-zalopay.gif" />
+</p>
 
 ## Requirements
 
@@ -49,6 +51,8 @@ REACT_APP_PAYMENT_ID="your_PAYMENT_ID_here"
 REACT_APP_KEY1="your_KEY1_here"
 REACT_APP_PRIVATE_KEY="your_PRIVATE_KEY_here"
 ```
+
+If you want a mock server, set `REACT_APP_IS_MOCK=1`
 
 2. Build & Start the server:
 
