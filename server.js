@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 const morgan = require("morgan");
 const { uuid } = require("uuidv4");
 const crypto = require("crypto-js");
-const NodeRSA = require("node-rsa");
+const rsa = require("node-rsa");
 const { validatePhone, validateAmount } = require("./src/app/util/helpers");
 
 // init app
@@ -26,7 +26,7 @@ dotenv.config({
   path: "./.env",
 });
 
-const isMock = process.env.REACT_APP_IS_MOCK === "1";
+const IS_MOCK = process.env.REACT_APP_IS_MOCK === "1";
 const SANDBOX_URL = process.env.REACT_APP_SANDBOX_URL;
 const API_BASE_PATH = "/api/v2";
 
@@ -44,7 +44,7 @@ app.post(`${API_BASE_PATH}/disbursement/user`, async (req, res) => {
     if (validatePhoneResult !== "") {
       return res.status(400).json(validatePhoneResult);
     }
-    if (isMock) {
+    if (IS_MOCK) {
       const data = {
         return_code: 1,
         return_message: "Success",
@@ -81,7 +81,7 @@ app.post(`${API_BASE_PATH}/disbursement/balance`, async (req, res) => {
   try {
     console.log("Received get balance request", req.body);
 
-    if (isMock) {
+    if (IS_MOCK) {
       const data = {
         return_code: 1,
         return_message: "Success",
@@ -135,7 +135,7 @@ app.post(`${API_BASE_PATH}/disbursement/topup`, async (req, res) => {
     const extraInfo = req.body.extra_info ?? "{}";
     const time = Date.now();
 
-    if (isMock) {
+    if (IS_MOCK) {
       const data = {
         return_code: 1,
         return_message: "Success",
@@ -160,7 +160,7 @@ app.post(`${API_BASE_PATH}/disbursement/topup`, async (req, res) => {
     const msg = Buffer.from(mac);
     const secretKey = process.env.REACT_APP_PRIVATE_KEY;
     const privateKey = Buffer.from(secretKey);
-    const key = new NodeRSA(privateKey, 'pkcs8');
+    const key = new rsa(privateKey, 'pkcs8');
     const signed = key.sign(msg, 'base64', 'utf8');
 
     const topupReq = {
@@ -200,7 +200,7 @@ app.post(`${API_BASE_PATH}/disbursement/txn`, async (req, res) => {
     }
     const time = Date.now();
 
-    if (isMock) {
+    if (IS_MOCK) {
       const data = {
         return_code: 1,
         return_message: "Success",

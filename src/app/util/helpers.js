@@ -24,6 +24,9 @@ module.exports = {
         if (isNaN(amount)) {
             return "Amount must be a number";
         }
+        if (amount <= 0) {
+            return "Amount must be greater than zero";
+        }
         return "";
     }
 };

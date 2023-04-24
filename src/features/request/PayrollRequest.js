@@ -23,20 +23,24 @@ export const PayrollRequestContainer = () => {
   };
 
   const handleAmountOnChange = (event) => {
-    const amount = event.target.value.toString().replace(",", "");
+    const amount = event.target.value.toString().replaceAll(",", "");
     setAmount(amount);
   };
 
-  const validateInputedAmount = () => {
+  const isValidAmount = () => {
     const validateAmountResult = validateAmount(amount);
     setAmountError(validateAmountResult);
     if (validateAmountResult !== "") {
       return false;
     }
+    if(amount > balance) {
+      setAmountError("Current balance is not enough for targe amount");
+      return false;
+    }
     return true;
   }
 
-  const validateInputedPhone = () => {
+  const isValidPhoneNumber = () => {
     const validatePhoneResult = validatePhone(phone);
     setPhoneError(validatePhoneResult);
     if (validatePhoneResult !== "") {
@@ -46,7 +50,7 @@ export const PayrollRequestContainer = () => {
   }
 
   const isFormDataValid = () => {
-    return validateInputedPhone() && validateInputedAmount();
+    return isValidPhoneNumber() && isValidAmount();
   }
 
   const handlePayOnClick = (event) => {

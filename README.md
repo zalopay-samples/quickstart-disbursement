@@ -54,7 +54,7 @@ REACT_APP_PRIVATE_KEY="your_PRIVATE_KEY_here"
 
 If you want a mock server, set `REACT_APP_IS_MOCK=1`
 
-2. Build & Start the server:
+2. Build & Start the server
 
 This will create a React production build and start the express server
 
@@ -62,7 +62,33 @@ This will create a React production build and start the express server
 npm run server
 ```
 
-3. Visit [http://localhost:3000/](http://localhost:3000/) to make a payroll request that pay via ZaloPay using Disbursement APIs.
+3. Build & Start the application
+
+Local development:
+
+To start a local instance that does not require a production build, run it.
+
+```
+npm run start
+```
+
+
+Production:
+
+Create a production build
+
+
+```
+npm run build
+```
+
+Start the application from the built files
+
+```
+serve -s build
+```
+
+Visit [http://localhost:3000/](http://localhost:3000/) to make a payroll request that pay via ZaloPay using Disbursement APIs.
 
 To try out payment you need install and register ZaloPay Sanbox , see [Test App](https://zalopay-samples.github.io/test-wallets).
 
