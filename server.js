@@ -51,7 +51,7 @@ app.post(`${API_BASE_PATH}/disbursement/user`, async (req, res) => {
         sub_return_code: 1,
         sub_return_message: "Success",
         data: {
-          name: "Longhb",
+          name: "Nguyen Van A",
           phone: phone,
           m_u_id: uuid(),
         }
