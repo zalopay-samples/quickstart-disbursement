@@ -2,19 +2,20 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { retrieveBalance, retrieveReceivingAccount, submitPay } from "../../app/paymentSlice";
-import CryptoJS from "crypto-js";
-import { formatVND } from "../../app/util/helpers";
+import { formatVND, validateAmount, validatePhone } from "../../app/util/helpers";
 
 export const PayrollRequestContainer = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [balance, setBalance] = useState("");
   const [phone, setPhone] = useState("");
   const [amount, setAmount] = useState("");
   const [amountError, setAmountError] = useState("");
   const [phoneError, setPhoneError] = useState("");
 
-  const [balance, setBalance] = useState("");
+  const appId = parseInt(process.env.REACT_APP_APP_ID);
+  const paymentId = process.env.REACT_APP_PAYMENT_ID;
 
   const handlePhoneOnChange = (event) => {
     const phoneNo = event.target.value;
@@ -22,60 +23,42 @@ export const PayrollRequestContainer = () => {
   };
 
   const handleAmountOnChange = (event) => {
-    const amount = event.target.value.toString().replace(",", "");
+    const amount = event.target.value.toString().replaceAll(",", "");
     setAmount(amount);
   };
 
-  const appId = parseInt(process.env.REACT_APP_APP_ID);
-  const paymentId = process.env.REACT_APP_PAYMENT_ID;
-
-  const validateAmount = () => {
-    if (amount.length <= 0) {
-      setAmountError("Amount is required");
+  const isValidAmount = () => {
+    const validateAmountResult = validateAmount(amount);
+    setAmountError(validateAmountResult);
+    if (validateAmountResult !== "") {
       return false;
     }
-    if (isNaN(amount)) {
-      setAmountError("Amount must be a number");
+    if(amount > balance) {
+      setAmountError("Current balance is not enough for targe amount");
       return false;
     }
-    setAmountError("");
     return true;
   }
 
-  const validatePhone = () => {
-    if (phone.length <= 0) {
-      setPhoneError("Phone number is required");
+  const isValidPhoneNumber = () => {
+    const validatePhoneResult = validatePhone(phone);
+    setPhoneError(validatePhoneResult);
+    if (validatePhoneResult !== "") {
       return false;
     }
-    if (isNaN(phone)) {
-      setPhoneError("Phone must be a number");
-      return false;
-    }
-    if (phone.length !== 10) {
-      setPhoneError("Phone number must be 10 digits");
-      return false;
-    }
-    setPhoneError("");
     return true;
   }
 
-  const isValid = () => {
-    return validatePhone() && validateAmount();
+  const isFormDataValid = () => {
+    return isValidPhoneNumber() && isValidAmount();
   }
 
   const handlePayOnClick = (event) => {
-    // validate form data
-    const isFormDataValid = isValid();
-    if (!isFormDataValid) {
+    if (!isFormDataValid()) {
       return;
     }
-
     dispatch(submitPay({ phone, amount }));
-
-    const time = Date.now();
-    const message = [appId, phone, time].join("|");
-    const mac = CryptoJS.HmacSHA256(message, process.env.REACT_APP_HMAC_KEY).toString();
-    dispatch(retrieveReceivingAccount({ app_id: appId, phone, time, mac }))
+    dispatch(retrieveReceivingAccount({ phone }))
       .unwrap()
       .then(res => {
         const hasNotAccount = res.return_code !== 1 && res.sub_return_code === -101;
@@ -91,19 +74,15 @@ export const PayrollRequestContainer = () => {
   };
 
   useEffect(() => {
-    const time = Date.now();
-    const message = [appId, paymentId, time].join("|");
-    const mac = CryptoJS.HmacSHA256(message, process.env.REACT_APP_HMAC_KEY).toString();
-    dispatch(retrieveBalance({ app_id: appId, payment_id: paymentId, time, mac }))
+    dispatch(retrieveBalance())
       .unwrap()
       .then(res => {
-        console.log(res);
         setBalance(res.data.balance);
       })
       .catch(e => {
         console.log(e);
       });
-  }, [dispatch]);
+  }, []);
 
   return (
     <main>
@@ -120,7 +99,7 @@ export const PayrollRequestContainer = () => {
           </div>
           <div className="payment-info-item">
             <p className="payment-info-item-left"> Balance</p>
-            <p className="payment-info-item-right"> {formatVND(balance)}</p>
+            <p className="payment-info-item-right"> {formatVND(balance)} VNĐ</p>
           </div>
           <h5 className="heading">Payment Info</h5>
           <div className="payment-form">
@@ -130,7 +109,7 @@ export const PayrollRequestContainer = () => {
                 <input
                   type="tel"
                   className="phone"
-                  placeholder="090xxxxxxx"
+                  placeholder="Enter phone number"
                   value={phone}
                   onChange={handlePhoneOnChange}
                 />
@@ -146,11 +125,11 @@ export const PayrollRequestContainer = () => {
                   <input
                     type="text"
                     className="payment-form-field-input, amount"
-                    placeholder="1000xxx"
+                    placeholder="Enter amount"
                     value={amount ? formatVND(amount) : ""}
                     onChange={handleAmountOnChange}
                   />
-                  <span> VNĐ</span>
+                  <span>VNĐ</span>
                 </div>
                 {amountError &&
                   <p className="error-message">{amountError}</p>

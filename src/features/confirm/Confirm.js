@@ -1,10 +1,7 @@
-import React, { useState } from "react";
-import CryptoJS from "crypto-js";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { topup, queryPaymentStatus } from "../../app/paymentSlice";
-import { Buffer } from "buffer";
-import NodeRSA from 'node-rsa';
 import { uuid } from "uuidv4";
 import { formatVND } from "../../app/util/helpers";
 
@@ -17,8 +14,6 @@ export const ConfirmContainer = () => {
   const paymentFormData = useSelector(state => state.payment.paymentRequest);
   const amount = parseInt(paymentFormData.amount);
 
-  const appId = parseInt(process.env.REACT_APP_APP_ID);
-  const paymentId = process.env.REACT_APP_PAYMENT_ID;
   const partnerOrderId = uuid().toString();
 
   // query payment status
@@ -26,33 +21,17 @@ export const ConfirmContainer = () => {
   let queryPaymentStatusInterval = null;
 
   const buildTopupRequest = () => {
-    // setup topup request data
-    const appId = parseInt(process.env.REACT_APP_APP_ID);
-    const paymentId = process.env.REACT_APP_PAYMENT_ID;
     const description = `Payment salary for ${name}`;
     const partnerEmbedData = "{\"store_id\":\"s2\",\"store_name\":\"name\"}";
     const extraInfo = "{}";
-    const time = Date.now();
-    const message = [appId, paymentId, partnerOrderId, mUid, amount, description, partnerEmbedData, extraInfo, time].join("|");
-
-    const mac = CryptoJS.HmacSHA256(message, process.env.REACT_APP_HMAC_KEY).toString();
-    const msg = Buffer.from(mac);
-    const secretKey = process.env.REACT_APP_PRIVATE_KEY;
-    const privateKey = Buffer.from(secretKey);
-    const key = new NodeRSA(privateKey, 'pkcs8');
-    const signed = key.sign(msg, 'base64', 'utf8');
 
     return {
-      app_id: appId,
-      payment_id: paymentId,
       partner_order_id: partnerOrderId,
       m_u_id: mUid,
       amount: amount,
       description: description,
       partner_embed_data: partnerEmbedData,
       extra_info: extraInfo,
-      time: time,
-      sig: signed,
     };
   };
 
@@ -72,9 +51,8 @@ export const ConfirmContainer = () => {
           navigate(`/status/success?reason=${name}`, { replace: true });
           return;
         }
-
         if (isProcessing(res)) {
-          queryPaymentStatusInterval = setInterval(handleQueryPaymentStatus, 10000);
+          queryPaymentStatusInterval = setInterval(handleQueryPaymentStatus, 1000);
           return;
         }
         const errorMessage = res.sub_return_message || res.return_message;
@@ -85,21 +63,8 @@ export const ConfirmContainer = () => {
       });
   };
 
-  const buildQueryPaymentStatusRequest = () => {
-    const time = Date.now();
-    const message = [appId, partnerOrderId, time].join("|");
-    const mac = CryptoJS.HmacSHA256(message, process.env.REACT_APP_HMAC_KEY).toString();
-
-    return {
-      app_id: appId,
-      partner_order_id: partnerOrderId,
-      time: time,
-      mac: mac,
-    };
-  };
-
   const handleQueryPaymentStatus = async () => {
-    dispatch(queryPaymentStatus(buildQueryPaymentStatusRequest()))
+    dispatch(queryPaymentStatus({ partner_order_id: partnerOrderId }))
       .unwrap()
       .then(res => {
         if (isSucessful(res)) {
@@ -107,9 +72,8 @@ export const ConfirmContainer = () => {
           navigate(`/status/success?reason=${name}`, { replace: true });
           return;
         }
-
         if (isProcessing(res)) {
-          if (queryPaymentStatusTry <= 3) {
+          if (queryPaymentStatusTry < 3) {
             queryPaymentStatusTry++;
           } else {
             clearInterval(queryPaymentStatusInterval);
@@ -118,10 +82,9 @@ export const ConfirmContainer = () => {
           }
           return;
         }
-
+        clearInterval(queryPaymentStatusInterval);
         const errorMessage = res.sub_return_message || res.return_message;
         navigate(`/status/error?reason=${errorMessage}`, { replace: true });
-        clearInterval(queryPaymentStatusInterval);
       })
       .catch(e => {
         console.log(e);

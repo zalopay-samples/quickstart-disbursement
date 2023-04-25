@@ -19,7 +19,9 @@ Disbursement refers to the act of paying out money, typically from a fund or acc
 
 This repository includes examples of integrations for online payments with ZaloPay [Disbursement APIs](https://docs.zalopay.vn/en/v2/payments/disbursement/overview.html). Within this Disbursify demo app, you'll find a simplified version of payroll application, complete with commented code to highlight key features and concepts of Disbursement's APIs.
 
-![Disbursify demo](public/images/payroll-via-zalopay.gif)
+<p align="center">
+  <img src="public/images/payroll-via-zalopay.gif" />
+</p>
 
 ## Requirements
 
@@ -50,7 +52,9 @@ REACT_APP_KEY1="your_KEY1_here"
 REACT_APP_PRIVATE_KEY="your_PRIVATE_KEY_here"
 ```
 
-2. Build & Start the server:
+If you want a mock server, set `REACT_APP_IS_MOCK=1`
+
+2. Build & Start the server
 
 This will create a React production build and start the express server
 
@@ -58,7 +62,33 @@ This will create a React production build and start the express server
 npm run server
 ```
 
-3. Visit [http://localhost:3000/](http://localhost:3000/) to make a payroll request that pay via ZaloPay using Disbursement APIs.
+3. Build & Start the application
+
+Local development:
+
+To start a local instance that does not require a production build, run it.
+
+```
+npm run start
+```
+
+
+Production:
+
+Create a production build
+
+
+```
+npm run build
+```
+
+Start the application from the built files
+
+```
+serve -s build
+```
+
+Visit [http://localhost:3000/](http://localhost:3000/) to make a payroll request that pay via ZaloPay using Disbursement APIs.
 
 To try out payment you need install and register ZaloPay Sanbox , see [Test App](https://zalopay-samples.github.io/test-wallets).
 
