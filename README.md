@@ -64,28 +64,10 @@ npm run server
 
 3. Build & Start the application
 
-Local development:
-
-To start a local instance that does not require a production build, run it.
+To start a local instance:
 
 ```
 npm run start
-```
-
-
-Production:
-
-Create a production build
-
-
-```
-npm run build
-```
-
-Start the application from the built files
-
-```
-serve -s build
 ```
 
 Visit [http://localhost:3000/](http://localhost:3000/) to make a payroll request that pay via ZaloPay using Disbursement APIs.
