@@ -48,13 +48,13 @@ REACT_APP_PRIVATE_KEY="your_PRIVATE_KEY_here"
 
 If you want a mock server, set `REACT_APP_IS_MOCK=1`
 
-1. Start the backend
+2. Start the backend
 
 ```
 npm run backend
 ```
 
-1. Start the frontend
+3. Start the frontend
 
 ```
 npm run frontend
