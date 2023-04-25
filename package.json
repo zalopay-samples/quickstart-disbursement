@@ -24,7 +24,6 @@
     "build": "dotenv -e .env react-scripts build",
     "test": "dotenv -e .env react-scripts test",
     "eject": "react-scripts eject",
-    "backend-prod": "npm run build && node server",
     "backend": "nodemon server"
   },
   "eslintConfig": {
