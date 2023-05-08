@@ -43,6 +43,11 @@ export const ConfirmContainer = () => {
     return res.return_code === 1 && res.data?.status === 3;
   }
 
+  const clearAndNavigate = (url) => {
+    clearInterval(queryPaymentStatusInterval);
+    navigate(url, { replace: true });
+  }
+
   const handleConfirm = (event) => {
     dispatch(topup(buildTopupRequest()))
       .unwrap()
@@ -68,23 +73,15 @@ export const ConfirmContainer = () => {
       .unwrap()
       .then(res => {
         if (isSucessful(res)) {
-          clearInterval(queryPaymentStatusInterval);
-          navigate(`/status/success?reason=${name}`, { replace: true });
+          clearAndNavigate(`/status/success?reason=${name}`);
           return;
         }
-        if (isProcessing(res)) {
-          if (queryPaymentStatusTry < 3) {
-            queryPaymentStatusTry++;
-          } else {
-            clearInterval(queryPaymentStatusInterval);
-            const timoutMessage = 'Payment status query is over 3 times';
-            navigate(`/status/error?reason=${timoutMessage}`, { replace: true });
-          }
+        if (isProcessing(res) && queryPaymentStatusTry < 3) {
+          queryPaymentStatusTry++;
           return;
         }
-        clearInterval(queryPaymentStatusInterval);
-        const errorMessage = res.sub_return_message || res.return_message;
-        navigate(`/status/error?reason=${errorMessage}`, { replace: true });
+        const errorMessage = isProcessing(res) ? 'Payment status query is over 3 times' : res.sub_return_message || res.return_message;
+        clearAndNavigate(`/status/error?reason=${errorMessage}`);
       })
       .catch(e => {
         console.log(e);
