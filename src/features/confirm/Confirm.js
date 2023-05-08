@@ -80,7 +80,8 @@ export const ConfirmContainer = () => {
           queryPaymentStatusTry++;
           return;
         }
-        const errorMessage = isProcessing(res) ? 'Payment status query is over 3 times' : res.sub_return_message || res.return_message;
+        // Payment status query limit reached doesn't mean the transfer request has failed
+        const errorMessage = isProcessing(res) ? 'Payment status query has been attempted more than 3 times' : res.sub_return_message || res.return_message;
         clearAndNavigate(`/status/error?reason=${errorMessage}`);
       })
       .catch(e => {
